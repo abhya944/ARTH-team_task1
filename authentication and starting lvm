@@ -11,8 +11,8 @@ def lvmcreation() :
         exit() ;
 
 print('enter your credential')
-name=input()
-passwd=input()
+name=input("Enter username")
+passwd=input("enter password")
 
 if (name == 'test') and (passwd == 'test'):
     print("WELCOME TO automation world")
