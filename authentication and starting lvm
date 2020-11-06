@@ -1,0 +1,25 @@
+import subprocess
+
+def lvmcreation() :
+    print("allocate free space")
+    print("enter how many physical volume we have")
+    n=int(input())
+    if(n > 0):
+        print("Enter name of physical volume")
+    else :
+        print("no name provide")
+        exit() ;
+
+print('enter your credential')
+name=input()
+passwd=input()
+
+if (name == 'test') and (passwd == 'test'):
+    print("WELCOME TO automation world")
+    while(1):
+        print("enter your choice")
+        userchoice = input() 
+        if(('create' in userchoice) or ('make' in userchoice) ) :
+            if ('lvm' in userchoice) :
+                lvmcreation()
+
