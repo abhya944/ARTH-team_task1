@@ -1,4 +1,49 @@
 import subprocess
+def yum_configure() :
+    print("\t\t YUM CONFIGURATION IS UNDER PROCESS ")
+    yum_status=sp.getstatusoutput("yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm")
+    if yum_status[0] == 0 :
+        print("configured yum")
+    else:
+        print("error in configureation")
+        exit()
+        
+def docker_locally() :
+    print("\t\tWELCOME TO DOCKER SERVICES \n\n")
+    present_docker=sp.getstatusoutput("docker --version")
+    
+    
+    if (present_docker[0] != 0):
+        print("docker service is not available ");
+        print( " DOWNLOADING DOCKER SERVICES ")
+        s=download_docker=sp.getstatusoutput("yum install docker-ce --nobest")
+        if(s[0] == 0):
+            print("successfullly installed docker")
+        else:
+            print(s[1])
+            exit()
+    status_docker=sp.getstatusoutput("systemctl is-active docker.services")
+    if(status_docker[1] == 'inactive'):
+        s=input(" do u want to start docker : ")
+        if ('yes' in s) or ('start' in s) :
+            sp.getstatusoutput("systemctl start docker.services")
+        else:
+            exit()
+    print("do u want to run an instance in docker ")
+    checker=input("enter your choice")
+    
+    if("yes" in checker):
+        cmd=""
+        enter=input("Enter os name and tag")
+        if ("centos" in enter):
+            sp.getstatusoutput("docker run -it centos:latest")
+        elif ("fedora" in enter):
+            sp.getstatusoutput("docker run -it fedora:latest")
+        else:
+            print("{} is not available ".format(enter))
+            print("pulling image from docker hub")
+            sp.getstatusoutput("docker pull {}".format(enter))
+            sp.getstatusoutput("docker run -it {}".format(enter))
 
 def lvmcreation() :
     print("welcome to partitioning ")
