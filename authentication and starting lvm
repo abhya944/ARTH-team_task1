@@ -1,20 +1,63 @@
 import subprocess
 
 def lvmcreation() :
-    print("allocate free space")
-    print("enter how many physical volume we have")
-    n=int(input())
-    if(n > 0):
-        print("Enter name of physical volume")
+    print("welcome to partitioning ")
+    print("u have free space ?")
+    print("how many devices u have")
+
+    n=int(input("Enter number : "))
+    l=[]
+    vg_pv=""
+    p=n
+    while(n > 0):
+            name=input("Enter {}th name".format(n))
+            l.append(name)
+            vg_pv+=name+" ";
+            n=n-1
+    while (p > 0):
+        status=sp.getstatusoutput("pvcreate {}".format(l[p-1]))
+        if status[0] == 0 :
+            print("successfully created {}".format(l[p-1]))
+        else :
+            print("Entered name is incorect : {}".format(l[p-1]))
+            exit()
+        p=p-1
+
+    print("creating single volume group for all physical volume ")
+
+    print("Enter name of volume group")
+    vg_name=input()
+    cmd="vgcreate {} {}".format(vg_name , vg_pv)
+    vg_status=sp.getstatusoutput(cmd)
+    if (vg_status[0] == 0):
+        print("successfuly created volume group {}".format(vg_name))
     else :
-        print("no name provide")
-        exit() ;
+        print("unable to create volume group with name : {}".format(vg_name))
+        exit()
 
-print('enter your credential')
-name=input("Enter username")
-passwd=input("enter password")
+    while(1):
+        lv_name=input("Enter name of logical volume : ")
+        lv_size=input("Enter size of logicl volume in MiB : ")
+        lv_status=sp.getstatusoutput("lvcreate --name {} --size {}M {}  ".format(lv_name ,lv_size , vg_name))
+        if lv_status[0] == 0 :
+            print("successfully created : {}".format(lv_name))
+        else:
+            print("unsuccess to create : {}".format(lv_name))
+        print("if u dont want to create logical volume type 'exit' ")
+        i=input()
+        if "exit" in i:
+            break;
 
-if (name == 'test') and (passwd == 'test'):
+def authentication() :
+    print('enter your credential')
+    name=input("Enter user name : ")
+    passwd=input("Enter password : ")
+    if (name == 'test') and (passwd == 'test'):
+        return 989 ;
+    else:
+        return 0 ;
+
+if authentication() == 989 :
     print("WELCOME TO automation world")
     while(1):
         print("enter your choice")
